@@ -1,0 +1,16 @@
+{
+  "name": "apex-ai-core",
+  "version": "1.0.0",
+  "description": "APEX · 世界顶级 AI 核心引擎：零依赖、全验证、开源。站在世界顶级算法之上。",
+  "main": "apex-ai.js",
+  "scripts": {
+    "test": "node test.cjs"
+  },
+  "keywords": ["ai", "machine-learning", "deep-learning", "transformer", "linear-algebra", "svd", "mlp", "kmeans", "pca", "gmm", "svm"],
+  "author": "晨星 (Morning Star)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CJX0712/apex-ai-core.git"
+  }
+}

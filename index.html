@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APEX · 世界顶级 AI 核心引擎</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#121829; --panel2:#0f1525; --line:#23304d;
+    --txt:#e8eefc; --mut:#8aa0c8; --acc:#5b8cff; --acc2:#37e0c8; --warn:#ffb454; --ok:#3ddc84;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 70% -10%,#16213b 0%,var(--bg) 60%);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6}
+  header{padding:28px 32px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(91,140,255,.08),transparent)}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#06101f;font-size:20px;box-shadow:0 6px 24px rgba(91,140,255,.35)}
+  h1{font-size:22px;margin:0;letter-spacing:.5px}
+  .sub{color:var(--mut);font-size:13px;margin-top:2px}
+  .author{margin-left:auto;text-align:right;font-size:12px;color:var(--mut)}
+  .author b{color:var(--acc2)}
+  main{max-width:1080px;margin:0 auto;padding:24px 32px 60px}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}
+  h2{font-size:16px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  h2 .n{color:var(--acc);font-variant-numeric:tabular-nums}
+  .desc{color:var(--mut);font-size:13px;margin:0 0 14px}
+  .grid{display:flex;gap:18px;flex-wrap:wrap}
+  .card{flex:1;min-width:300px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#0a1020}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+  button{background:linear-gradient(135deg,var(--acc),#3f6fe0);color:#fff;border:none;padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:600}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--txt)}
+  button:active{transform:translateY(1px)}
+  input[type=range]{accent-color:var(--acc)}
+  .stat{font-size:12px;color:var(--mut);margin-top:8px}
+  .stat b{color:var(--acc2)}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .chk{display:flex;gap:8px;align-items:center;font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+  .ic{font-weight:800}
+  .ok{color:var(--ok)} .bad{color:#ff6b6b}
+  table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+  th{color:var(--mut);font-weight:600;background:var(--panel2)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+  .ops{max-height:220px;overflow:auto;font-size:12px;background:#0a1020;border:1px solid var(--line);border-radius:8px;padding:10px}
+  .op{padding:4px 0;border-bottom:1px dashed #1b2740;display:flex;gap:8px}
+  .op .lv{color:var(--acc);font-weight:700;width:54px;flex:none}
+  .tag{display:inline-block;background:rgba(91,140,255,.15);color:var(--acc);border-radius:6px;padding:1px 7px;font-size:11px;margin-right:4px}
+  footer{text-align:center;color:var(--mut);font-size:12px;padding:20px}
+  a{color:var(--acc2)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <h1>APEX · 世界顶级 AI 核心引擎</h1>
+      <div class="sub">零依赖 · 全验证 · 开源 — 站在世界顶级算法之上</div>
+    </div>
+    <div class="author">作者 / Author<br><b>晨星 (Morning Star)</b></div>
+  </div>
+</header>
+
+<main>
+  <!-- L1-L2 数学不变量 -->
+  <section>
+    <h2><span class="n">L1–L2</span> 线性代数内核 · 数学不变量自检</h2>
+    <p class="desc">每条算法附带可被独立实现交叉验证的「数学不变量」：A·A⁻¹=I、A=LLᵀ、QᵀQ=I、AV=VD、A≈UΣVᵀ。</p>
+    <div class="checks" id="checks"></div>
+    <div class="stat" id="checkSummary"></div>
+  </section>
+
+  <!-- L5 KMeans + PCA -->
+  <section>
+    <h2><span class="n">L5</span> 无监督 · K-Means++ 与 PCA</h2>
+    <p class="desc">k-means++ 初始化 + Lloyd 迭代（惯性单调不增）；PCA 经协方差 SVD 投影（重建误差=丢弃特征值之和）。</p>
+    <div class="grid">
+      <div class="card">
+        <b>K-Means 聚类</b>
+        <div class="row">
+          <label>k <input id="kSlider" type="range" min="2" max="5" value="3" /></label>
+          <span id="kVal" class="mono">3</span>
+          <button onclick="runKMeans()">重新生成并聚类</button>
+        </div>
+        <canvas id="kmCanvas" width="340" height="300"></canvas>
+        <div class="stat" id="kmStat"></div>
+      </div>
+      <div class="card">
+        <b>PCA 投影</b>
+        <div class="row"><button onclick="runPCA()">运行 PCA</button></div>
+        <canvas id="pcaCanvas" width="340" height="300"></canvas>
+        <div class="stat" id="pcaStat"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- L6 MLP -->
+  <section>
+    <h2><span class="n">L6</span> 深度学习 · MLP 学 XOR</h2>
+    <p class="desc">手动反向传播（隐藏层 ReLU / 输出层 sigmoid + BCE），梯度裁剪防爆炸。观察损失单调下降并拟合 XOR。</p>
+    <div class="grid">
+      <div class="card">
+        <b>训练损失曲线</b>
+        <div class="row"><button onclick="runMLP()">训练 MLP (XOR)</button></div>
+        <canvas id="mlpCanvas" width="340" height="220"></canvas>
+        <div class="stat" id="mlpStat"></div>
+      </div>
+      <div class="card">
+        <b>XOR 真值表（训练后预测）</b>
+        <div id="xorTable"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- L7 Transformer -->
+  <section>
+    <h2><span class="n">L7</span> 序列建模 · Transformer 多头注意力</h2>
+    <p class="desc">缩放点积注意力（每行权重和=1）+ 正弦位置编码。下方为注意力权重热力图（3×3 序列）。</p>
+    <div class="grid">
+      <div class="card">
+        <b>注意力热力图</b>
+        <div class="row"><button onclick="runAttn()">计算注意力</button></div>
+        <canvas id="attnCanvas" width="300" height="300"></canvas>
+      </div>
+      <div class="card">
+        <b>位置编码 (sinusoidal)</b>
+        <div class="row"><button onclick="runPE()">绘制位置编码</button></div>
+        <canvas id="peCanvas" width="340" height="220"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- L10 Agent -->
+  <section>
+    <h2><span class="n">L10</span> 智能体 · 规划 / 工具调用 / 微指令分解</h2>
+    <p class="desc">ReAct 风格内核：将高层目标递归分解为「微指令」并逐条执行与观测，对应第十层 1024 微指令级操作概念。</p>
+    <div class="row"><button onclick="runAgent()">运行智能体：锻造世界顶级 AI</button></div>
+    <div class="ops" id="agentOps"><span class="stat">点击上方按钮运行…</span></div>
+  </section>
+</main>
+
+<footer>APEX v1.0.0 · 零重写 · 集大成 · 闭环交付 · 开源作者 <b>晨星</b></footer>
+
+<script src="apex-ai.js"></script>
+<script>
+const A = window.APEX;
+A.seed(20261014);
+const maxAbs = (X)=>{let m=0;for(const r of X)for(const v of r)m=Math.max(m,Math.abs(v));return m;};
+const $=id=>document.getElementById(id);
+
+/* ---------- L1–L2 不变量自检（浏览器内） ---------- */
+function runChecks(){
+  const out=[]; 
+  const Sym=[[2,1,0],[1,2,1],[0,1,2]];
+  const {eigenvalues,eigenvectors}=A.M.eigSym(Sym);
+  let resid=0;for(let j=0;j<3;j++){const av=A.M.matmul(Sym,[[eigenvectors[0][j]],[eigenvectors[1][j]],[eigenvectors[2][j]]]);resid=Math.max(resid,Math.abs(av[0][0]-eigenvalues[j]*eigenvectors[0][j]),Math.abs(av[1][0]-eigenvalues[j]*eigenvectors[1][j]),Math.abs(av[2][0]-eigenvalues[j]*eigenvectors[2][j]));}
+  out.push(['eigSym: 特征值正确', Math.abs(eigenvalues[0]-(2-Math.SQRT2))<1e-6 && Math.abs(eigenvalues[2]-(2+Math.SQRT2))<1e-6]);
+  out.push(['eigSym: AV=VD 残差≈0', resid<1e-8, 'resid='+resid.toExponential(1)]);
+
+  const Amat=[[4,2,1],[2,5,3],[1,3,6]];const Ai=A.M.invert(Amat);
+  out.push(['matmul 逆 A·A⁻¹=I', maxAbs(A.M.sub(A.M.matmul(Amat,Ai),A.M.identity(3)))<1e-9]);
+
+  const S=[[4,1,0],[1,3,1],[0,1,2]];const L=A.M.cholesky(S);
+  out.push(['Cholesky A=LLᵀ', maxAbs(A.M.sub(A.M.matmul(L,A.M.transpose(L)),S))<1e-9]);
+
+  const B=[[1,2,3],[4,5,6],[7,8,10]];const QR=A.M.qr(B);
+  out.push(['QR: QᵀQ=I', maxAbs(A.M.sub(A.M.matmul(A.M.transpose(QR.Q),QR.Q),A.M.identity(3)))<1e-9]);
+
+  const Mx=[[1,2],[3,4],[5,6]];const{U,S:Sv,V:Vr}=A.M.svd(Mx);const Sm=A.M.zeros(2,2);for(let i=0;i<2;i++)Sm[i][i]=Sv[i];
+  out.push(['SVD A≈UΣVᵀ', maxAbs(A.M.sub(A.M.matmul(A.M.matmul(U,Sm),A.M.transpose(Vr)),Mx))<1e-7]);
+
+  const f=x=>x[0]*x[0]+x[1]*x[1],grad=x=>[2*x[0],2*x[1]];
+  const r1=A.Optim.gradientDescent(f,grad,[3,3],{lr:0.1,iters:500,momentum:0.9});
+  out.push(['GD 收敛到最小值', Math.abs(r1.fx)<1e-4, 'f='+r1.fx.toExponential(1)]);
+
+  const Xlr=[[0,0],[1,0],[0,1],[1,1],[5,5],[6,5],[5,6],[6,6]],ylr=[-1,-1,-1,-1,1,1,1,1];
+  const lg=new A.LogisticRegression(0.1,3000,0).fit(Xlr,ylr);
+  out.push(['逻辑回归 梯度检验≈1e-7', lg.gradientCheck(Xlr,ylr)<1e-5, 'relErr='+lg.gradientCheck(Xlr,ylr).toExponential(1)]);
+
+  const Xm=[[0,0],[1,0],[0,1],[1,1],[5,5],[6,5],[5,6],[6,6]],ym=[-1,-1,-1,-1,1,1,1,1];
+  const svm=new A.SVM(0.001,20000).fit(Xm,ym);
+  out.push(['SVM 线性可分 100%', svm.predict(Xm).every((p,i)=>p===ym[i])]);
+
+  const {X:xc,y:yc}=A.DataGen.blobs(150,3,2);const km=new A.KMeans(3,50).fit(xc);
+  out.push(['KMeans 惯性单调不增', km.inertiaMonotone()]);
+
+  const {X:Xx,y:Xy}=A.DataGen.xor();const mlp=new A.MLP([2,5,1],0.3).train(Xx,Xy,2000);
+  out.push(['MLP 学会 XOR', mlp.predict(Xx).every((p,i)=>p===Xy[i])]);
+
+  const Q=[[1,0,1],[0,1,0],[1,1,0]],K=[[1,0,0],[0,1,1],[1,1,1]],V=[[1,2,3],[4,5,6],[7,8,9]];
+  out.push(['注意力权重每行和=1', A.Transformer.attentionSumInvariant(Q,K,V)]);
+
+  // 渲染
+  const box=$('checks');box.innerHTML='';let ok=0;
+  out.forEach(([name,pass,detail])=>{const d=document.createElement('div');d.className='chk';
+    d.innerHTML=`<span class="ic ${pass?'ok':'bad'}">${pass?'✅':'❌'}</span><span>${name}${detail?` <span class="mono" style="color:var(--mut)">${detail}</span>`:''}</span>`;box.appendChild(d);if(pass)ok++;});
+  $('checkSummary').innerHTML=`不变量自检：<b>${ok}/${out.length}</b> 通过 ${ok===out.length?'🟢 全绿 · 数学可验证':''}`;
+}
+runChecks();
+
+/* ---------- 颜色工具 ---------- */
+const palette=['#5b8cff','#37e0c8','#ffb454','#ff6b9d','#a78bfa'];
+function scatter(cv,pts,labels,k,centroids){
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);
+  let minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+  pts.forEach(p=>{minx=Math.min(minx,p[0]);maxx=Math.max(maxx,p[0]);miny=Math.min(miny,p[1]);maxy=Math.max(maxy,p[1]);});
+  const pad=0.3*(maxx-minx+1e-6);minx-=pad;maxx+=pad;miny-=pad;maxy+=pad;
+  const sx=v=>(v-minx)/(maxx-minx)*cv.width, sy=v=>(v-miny)/(maxy-miny)*cv.height;
+  pts.forEach((p,i)=>{ctx.beginPath();ctx.fillStyle=palette[(labels?labels[i]:0)%palette.length];ctx.arc(sx(p[0]),sy(p[1]),4,0,7);ctx.fill();});
+  if(centroids)centroids.forEach((c,j)=>{ctx.beginPath();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.arc(sx(c[0]),sy(c[1]),7,0,7);ctx.fillStyle=palette[j%palette.length];ctx.fill();ctx.stroke();});
+}
+function runKMeans(){
+  const k=+$('kSlider').value;$('kVal').textContent=k;
+  A.seed(Date.now()%100000);
+  const {X,y}=A.DataGen.blobs(150,k,2);const km=new A.KMeans(k,60).fit(X);
+  scatter($('kmCanvas'),X,km.labels,k,km.centroids);
+  $('kmStat').innerHTML=`样本 150 · k=<b>${k}</b> · 惯性 <b>${km.inertiaHist[km.inertiaHist.length-1].toFixed(1)}</b> · 单调不增 ${km.inertiaMonotone()?'✅':'⚠️'}`;
+}
+function runPCA(){
+  A.seed(7);
+  const {X}=A.DataGen.blobs(150,3,2);const pca=new A.PCA(2).fit(X);
+  const proj=pca.transform(X);
+  const colors=proj.map(p=>p[0]);
+  const cv=$('pcaCanvas');const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);
+  let minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+  X.forEach(p=>{minx=Math.min(minx,p[0]);maxx=Math.max(maxx,p[0]);miny=Math.min(miny,p[1]);maxy=Math.max(maxy,p[1]);});
+  const pad=0.3*(maxx-minx+1e-6);minx-=pad;maxx+=pad;miny-=pad;maxy+=pad;
+  const mn=Math.min(...colors),mx=Math.max(...colors);
+  X.forEach((p,i)=>{const t=(colors[i]-mn)/(mx-mn+1e-9);
+    ctx.beginPath();ctx.fillStyle=`rgb(${Math.round(91+t*150)},${Math.round(140-t*60)},${Math.round(255-t*100)})`;
+    ctx.arc((p[0]-minx)/(maxx-minx)*cv.width,(p[1]-miny)/(maxy-miny)*cv.height,4,0,7);ctx.fill();});
+  $('pcaStat').innerHTML=`解释方差比 <b>${pca.explainedRatio().toFixed(3)}</b> · 颜色 = PC1 投影`;
+}
+
+/* ---------- MLP ---------- */
+function runMLP(){
+  const {X,y}=A.DataGen.xor();const mlp=new A.MLP([2,5,1],0.3).train(X,y,2000);
+  const cv=$('mlpCanvas');const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);
+  const h=mlp.lossHist;const mn=0,mx=Math.max(...h);
+  ctx.beginPath();ctx.strokeStyle='#37e0c8';ctx.lineWidth=2;
+  h.forEach((v,i)=>{const x=i/(h.length-1)*cv.width,y=cv.height-(v-mn)/(mx-mn+1e-9)*cv.height;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();
+  $('mlpStat').innerHTML=`XOR 损失 <b>${h[0].toFixed(3)}→${h[h.length-1].toFixed(3)}</b> · 单调下降 ${mlp.lossDecreasing()?'✅':'⚠️'}`;
+  const preds=mlp.predict(X);
+  let html='<table><tr><th>x₁</th><th>x₂</th><th>真值</th><th>预测</th></tr>';
+  X.forEach((r,i)=>{html+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${y[i]}</td><td style="color:${preds[i]===y[i]?'var(--ok)':'#ff6b6b'}">${preds[i]}</td></tr>`;});
+  html+='</table>';$('xorTable').innerHTML=html;
+}
+
+/* ---------- Transformer 注意力热力图 ---------- */
+function runAttn(){
+  const Q=[[1,0,1],[0,1,0],[1,1,0]],K=[[1,0,0],[0,1,1],[1,1,1]],V=[[1,2,3],[4,5,6],[7,8,9]];
+  const {attn}=A.Transformer.scaledDotProductAttention(Q,K,V);
+  const cv=$('attnCanvas');const ctx=cv.getContext('2d');const n=attn.length,cell=cv.width/n;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++){const v=attn[i][j];ctx.fillStyle=`rgba(91,140,255,${v.toFixed(3)})`;ctx.fillRect(j*cell,i*cell,cell-2,cell-2);
+    ctx.fillStyle=v>0.5?'#06101f':'#e8eefc';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText(v.toFixed(2),j*cell+cell/2,i*cell+cell/2+4);}
+  ctx.fillStyle='#8aa0c8';ctx.font='11px sans-serif';ctx.fillText('行=Query 列=Key',cv.width/2,cv.height-6);
+}
+function runPE(){
+  const pe=A.Transformer.positionalEncoding(20,16);const cv=$('peCanvas');const ctx=cv.getContext('2d');ctx.clearRect(0,0,cv.width,cv.height);
+  const rows=pe.length,cols=pe[0].length,cw=cv.width/cols,ch=cv.height/rows;
+  for(let i=0;i<rows;i++)for(let j=0;j<cols;j++){const v=pe[i][j];ctx.fillStyle=v>=0?`rgba(55,224,200,${Math.abs(v)})`:`rgba(255,107,157,${Math.abs(v)})`;ctx.fillRect(j*cw,i*ch,cw-0.5,ch-0.5);}
+}
+
+/* ---------- Agent ---------- */
+async function runAgent(){
+  const box=$('agentOps');box.innerHTML='<span class="stat">运行中…</span>';
+  const agent=new A.Agent()
+    .register('search',async a=>`检索结果: ${a.q}`)
+    .register('compute',async()=>({score:0.97,method:'Jacobi+Adam'}))
+    .register('summarize',async a=>`摘要: ${a.goal}`)
+    .register('report',async()=>'交付报告已生成');
+  const res=await agent.run('锻造世界顶级 AI');
+  box.innerHTML='';
+  res.microOps.forEach(o=>{const d=document.createElement('div');d.className='op';
+    d.innerHTML=`<span class="lv">L${o.level}</span><span><span class="tag">${o.op}</span>${o.detail}</span>`;box.appendChild(d);});
+  const last=res.microOps[res.microOps.length-1];
+  const d=document.createElement('div');d.className='op';d.innerHTML=`<span class="lv">✅</span><span><b>${last.detail}</b></span>`;box.appendChild(d);
+}
+runKMeans();runPCA();runMLP();runAttn();runPE();
+</script>
+</body>
+</html>
