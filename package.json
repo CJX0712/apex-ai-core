@@ -1,16 +1,36 @@
 {
   "name": "apex-ai-core",
   "version": "1.0.0",
-  "description": "APEX · 世界顶级 AI 核心引擎：零依赖、全验证、开源。站在世界顶级算法之上。",
+  "description": "APEX · 世界顶级 AI 核心引擎：零依赖、全验证、开源。站在世界顶级算法之上。含完整 ML 库(34 不变量) + LLaMA/GPT 级深度 TransformerLM(RoPE/RMSNorm/SwiGLU/AdamW，9 不变量)。",
   "main": "apex-ai.js",
   "scripts": {
-    "test": "node test.cjs"
+    "test": "node test.cjs && node verify-transformer.js",
+    "test:core": "node test.cjs",
+    "test:transformer": "node verify-transformer.js"
   },
-  "keywords": ["ai", "machine-learning", "deep-learning", "transformer", "linear-algebra", "svd", "mlp", "kmeans", "pca", "gmm", "svm"],
+  "keywords": [
+    "ai", "machine-learning", "deep-learning", "transformer", "llm",
+    "rope", "rmsnorm", "swiglu", "adamw", "attention", "autograd",
+    "numerical-gradient-check", "linear-algebra", "svd", "mlp", "kmeans", "pca", "gmm", "svm",
+    "zero-dependency"
+  ],
   "author": "晨星 (Morning Star)",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/CJX0712/apex-ai-core.git"
-  }
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "apex-ai.js",
+    "apex-transformer.js",
+    "test.cjs",
+    "verify-transformer.js",
+    "index.html",
+    "ARCHITECTURE.md",
+    "README.md",
+    "LICENSE"
+  ]
 }

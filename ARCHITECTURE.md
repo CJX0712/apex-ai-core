@@ -11,7 +11,7 @@
 ├─────────────────────────────────────────────────────────────┤
 │ L8   训练范式           损失函数 + 优化器 闭环                 │
 ├─────────────────────────────────────────────────────────────┤
-│ L7   序列建模   Transformer  多头自注意力 + 正弦位置编码       │  ← 注意力每行和=1
+│ L7   序列建模   Transformer  多头自注意力(浅) + 深度LM(apex-transformer)│  ← 行和=1 / 梯度检验
 ├─────────────────────────────────────────────────────────────┤
 │ L6   表示学习   MLP      反向模式自动微分 + 反向传播          │  ← 损失单调下降
 ├─────────────────────────────────────────────────────────────┤
@@ -68,6 +68,32 @@
 | GMM | 责任度每行和=1；对数似然单调不减 | EM 定理 |
 | MLP | 损失单调下降；XOR 可学 | 反向传播 |
 | 多头注意力 | 注意力权重每行和=1 | softmax 归一 |
+| RMSNorm 反向 | 解析梯度 = 中心差分 (`~1e-8`) | 归一化链式法则 |
+| RoPE 位置编码 | 施加/逆施加互为逆变换（模长不变） | 旋转矩阵正交性 |
+| SwiGLU 反向 | 解析梯度 = 中心差分 (`~1e-9`) | 门控线性单元链式 |
+| TransformerLM 端到端 | 全参数数值梯度检验 (`maxRelErr ~1e-7`, 60 项) | 手动反向传播 vs 中心差分 |
+
+## 深度序列建模：`apex-transformer.js`（LLaMA/GPT 级）
+
+L7 的第二形态——一个**可训练、可端到端梯度检验**的因果语言模型 `TransformerLM`，直接复用支撑前沿大模型的真实构件（零重写）：
+
+| 构件 | 世界级来源 |
+|------|-----------|
+| RMSNorm | Zhang & Sennrich 2019（LLaMA） |
+| RoPE 旋转位置编码 | Su et al. 2021（RoFormer / LLaMA） |
+| SwiGLU 门控激活 | Shazeer 2020（PaLM / LLaMA） |
+| 因果多头注意力 | Vaswani et al. 2017（Transformer） |
+| 交叉熵 + logsumexp | 数值稳定惯例 |
+| AdamW 优化器 | Kingma & Ba 2015 / Loshchilov & Hutter 2019 |
+
+`TransformerLM` 为 Pre-Norm 残差结构（RMSNorm → 因果 MHA → 残差 → RMSNorm → SwiGLU → 残差），全程**手工反向传播**，以 `Float64Array` 行主序张量表示，确定性 RNG 保证可复现。其正确性由 `verify-transformer.js` 的 9 项不变量背书——核心是**端到端全参数数值梯度检验**（中心差分 vs 解析梯度，60 项，`maxRelErr ~1e-7`）与 copy 任务训练收敛（loss 3.469→0.032，准确率 100%）。
+
+```js
+const { TransformerLM } = require('./apex-transformer.js');
+const model = new TransformerLM({ vocab: 16, dim: 64, heads: 4, layers: 3, seed: 42 });
+const loss = model.trainStep([[3, 7, 1, 9, 2, 5]], 0.05); // 单步训练
+model.predict([3, 7], 4);                                  // 自回归推理
+```
 
 ## 零重写 / 集大成 落地
 
@@ -78,7 +104,8 @@
 ## 复现与可验证
 
 ```bash
-A.seed(20261014)   // 固定种子
-node test.cjs      // 34/34 全绿，且与上次运行结果一致
+node test.cjs              # 完整 ML 库 34 项不变量 → 34/34 全绿
+node verify-transformer.js # 深度 TransformerLM 9 项不变量 → 9/9 全绿
+npm test                   # 两者串联，共 43 项不变量全绿
 ```
-随机性由可复现的 mulberry32 生成器驱动（`randn` / `DataGen`），保证交付**可复现**。
+随机性由可复现的 mulberry32 生成器（`apex-ai.js`）与线性同余 + Box-Muller 生成器（`apex-transformer.js`）驱动，固定种子保证交付**可复现**、结果与上次运行一致。
